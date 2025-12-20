@@ -39,6 +39,9 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "license": "LICENSE.txt"
+    },
+    "linux": {
+      "target": ["AppImage", "deb", "tar.xz", "zip"]
     }
   }
 }
