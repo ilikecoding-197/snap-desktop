@@ -827,7 +827,7 @@ IDE_Morph.prototype.openIn = function (world) {
     }
 
     if (location.protocol === 'file:') {
-        Process.prototype.enableJS = true;
+        //Process.prototype.enableJS = true;
     } else {
         if (!sessionStorage.username) {
             // check whether login should persist across browser sessions
@@ -4233,6 +4233,13 @@ IDE_Morph.prototype.snapMenu = function () {
                 + '\nnot user-friendly!',
             new Color(100, 0, 0)
         );
+        menu.addItem(
+            'Open dev tools',
+            () => electronAPI.openDevTools(),
+            'open chromium\'s dev tools to run JS' +
+            "\n code or inspect the DOM",
+            new Color(100, 0, 0)
+        );
     }
     menu.popup(world, this.logo.bottomLeft());
 };
@@ -5263,10 +5270,6 @@ IDE_Morph.prototype.projectMenu = function () {
     menu.addItem(
         'Libraries...',
         () => {
-            if (location.protocol === 'file:') {
-                this.importLocalFile();
-                return;
-            }
             this.getURL(
                 this.resourceURL('libraries', 'LIBRARIES.json'),
                 txt => {
@@ -5280,10 +5283,6 @@ IDE_Morph.prototype.projectMenu = function () {
     menu.addItem(
         localize(graphicsName) + '...',
         () => {
-            if (location.protocol === 'file:') {
-                this.importLocalFile();
-                return;
-            }
             this.importMedia(graphicsName);
         },
         'Select a costume from the media library'
@@ -5291,10 +5290,6 @@ IDE_Morph.prototype.projectMenu = function () {
     menu.addItem(
         localize('Sounds') + '...',
         () => {
-            if (location.protocol === 'file:') {
-                this.importLocalFile();
-                return;
-            }
             this.importMedia('Sounds');
         },
         'Select a sound from the media library'
