@@ -22,7 +22,7 @@
   "build": {
     "appId": "com.codingisfun2831t.snap",
     "productName": "Snap!Desktop",
-    "icon": "snap/img/snap-icon-256.png",
+    "icon": "snap/img/snap-icon-512.png",
     "files": [
       "snap/**/*",
       "main.js",
