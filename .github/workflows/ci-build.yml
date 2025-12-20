@@ -1,5 +1,7 @@
 name: Electron CI Build
-
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
 # Trigger on every push and pull request
 on:
   push:
