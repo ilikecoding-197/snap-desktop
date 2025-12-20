@@ -1,14 +1,18 @@
 {
   "name": "snap-desktop",
-  "version": "1.0.0",
-  "description": "",
+  "version": "1.0.1",
+  "description": "Snap! for Desktop",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "ilikecoding-197",
+    "email": "64pigpig2014@gmail.com"
+  },
+  "homepage": "https://github.com/ilikecoding-197/snap-desktop",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
@@ -41,7 +45,13 @@
       "license": "LICENSE.txt"
     },
     "linux": {
-      "target": ["AppImage", "deb", "tar.xz", "zip"]
+      "target": ["AppImage", "deb", "tar.xz", "zip"],
+      "category": "Programming",
+      "maintainer": "ilikecoding-197 <64pigpig2014@gmail.com>"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": ["dmg", "zip"]
     }
   }
 }
