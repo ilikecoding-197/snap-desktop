@@ -1,0 +1,52 @@
+name: Electron CI Build
+
+# Trigger on every push and pull request
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"  # optional: also build feature branches
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      # 1. Checkout repo
+      - uses: actions/checkout@v3
+
+      # 2. Setup Node.js
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3. Cache npm dependencies
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      # 4. Install dependencies
+      - name: Install dependencies
+        run: npm ci
+
+      # 5. Build Electron app
+      - name: Build Electron App
+        run: npm run dist
+
+      # 6. Upload artifacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: MyApp-${{ matrix.os }}
+          path: dist/**/*
