@@ -47,6 +47,9 @@ function createWindow() {
         win.setFullScreen(!win.isFullScreen());
     });
 
+    ipcMain.handle('open-dev-tools', () => {
+        win.webContents.openDevTools();
+    });
 }
 
 app.whenReady().then(createWindow);
