@@ -826,16 +826,12 @@ IDE_Morph.prototype.openIn = function (world) {
         interpretUrlAnchors.call(this);
     }
 
-    if (location.protocol === 'file:') {
-        //Process.prototype.enableJS = true;
+    if (!sessionStorage.username) {
+        // check whether login should persist across browser sessions
+        this.cloud.initSession(initUser);
     } else {
-        if (!sessionStorage.username) {
-            // check whether login should persist across browser sessions
-            this.cloud.initSession(initUser);
-        } else {
-            // login only persistent during a single browser session
-            this.cloud.checkCredentials(initUser);
-        }
+        // login only persistent during a single browser session
+        this.cloud.checkCredentials(initUser);
     }
 
     world.keyboardFocus = this.stage;
@@ -4250,11 +4246,6 @@ IDE_Morph.prototype.cloudMenu = function () {
         pos = this.controlBar.cloudButton.bottomLeft(),
         shiftClicked = (world.currentKey === 16);
 
-    if (location.protocol === 'file:' && !shiftClicked) {
-        this.showMessage('cloud unavailable without a web server.');
-        return;
-    }
-
     menu = new MenuMorph(this);
     if (shiftClicked) {
         menu.addItem(
@@ -6022,22 +6013,7 @@ IDE_Morph.prototype.deletePaletteCategory = function (name) {
 };
 
 IDE_Morph.prototype.save = function () {
-    // temporary hack - only allow exporting projects to disk
-    // when running Snap! locally without a web server
     var pn = this.getProjectName();
-    if (location.protocol === 'file:') {
-        if (pn) {
-            this.exportProject(pn);
-        } else {
-            this.prompt(
-                'Export Project As...',
-                name => this.exportProject(name),
-                null,
-                'exportProject'
-            );
-        }
-        return;
-    }
 
     if (this.source === 'examples' || this.source === 'local') {
         // cannot save to examples, deprecated localStorage
@@ -7734,47 +7710,14 @@ IDE_Morph.prototype.createNewProject = function () {
 };
 
 IDE_Morph.prototype.addScene = function () {
-    var setting = this.isAddingScenes;
-    if (location.protocol === 'file:') {
-        // bypass the project import dialog and directly pop up
-        // the local file picker.
-        // this should not be necessary, we should be able
-        // to access the cloud even when running Snap! locally
-        // to be worked on.... (jens)
-        this.isAddingScenes = true;
-        this.importLocalFile();
-        this.isAddingScenes = setting;
-        return;
-    }
     new ProjectDialogMorph(this, 'add').popUp();
 };
 
 IDE_Morph.prototype.openProjectsBrowser = function () {
-    if (location.protocol === 'file:') {
-        // bypass the project import dialog and directly pop up
-        // the local file picker.
-        // this should not be necessary, we should be able
-        // to access the cloud even when running Snap! locally
-        // to be worked on.... (jens)
-        this.importLocalFile();
-        return;
-    }
     new ProjectDialogMorph(this, 'open').popUp();
 };
 
 IDE_Morph.prototype.saveProjectsBrowser = function () {
-    // temporary hack - only allow exporting projects to disk
-    // when running Snap! locally without a web server
-    if (location.protocol === 'file:') {
-        this.prompt(
-            'Export Project As...',
-            name => this.exportProject(name),
-            null,
-            'exportProject'
-        );
-        return;
-    }
-
     if (this.source === 'examples') {
         this.source = null; // cannot save to examples
     }

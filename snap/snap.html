@@ -13,6 +13,7 @@
         <meta name="mobile-web-app-title" content="Snap!">
         <meta name="msapplication-TileImage" content="img/snap-icon-144.png">
         <meta name="msapplication-TileColor" content="#FFFFFF">
+        <meta name="snap-cloud-domain" location="https://snap.berkeley.edu">
         <script src="src/morphic.js?version=2025-09-15"></script>
         <script src="src/symbols.js?version=2024-11-24"></script>
         <script src="src/widgets.js?version=2025-09-10"></script>
@@ -59,10 +60,7 @@
                     navigator.serviceWorker.register('sw.js');
                 }
                 world = new WorldMorph(document.getElementById('world'));
-                let ide = new IDE_Morph({
-                    border: 1,
-                    noCloud: true
-                });
+                let ide = new IDE_Morph({ border: 1 });
                 ide.openIn(world);
 
                 window.electronAPI.onFullscreenChange((isFullscreen) => {

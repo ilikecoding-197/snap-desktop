@@ -261,10 +261,6 @@ Cloud.prototype.withCredentialsRequest = function (
 
 Cloud.prototype.initSession = function (onSuccess) {
     var myself = this;
-    if (location.protocol === 'file:') {
-        // disabled for now (jens)
-        return;
-    }
     this.request(
         'POST',
         '/init',
