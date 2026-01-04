@@ -12471,14 +12471,25 @@ WorldMorph.prototype.initEventListeners = function () {
         false
     );
 
-    this.onbeforeunloadListener = (evt) => {
-        if (this.hasUnsavedEdits() && !window.noExitWarning) {
-            evt.preventDefault();
-            // legacy browsers support
-            evt.returnValue = true;
+    this.onbeforeunloadListener = (e) => {
+            if (this.hasUnsavedEdits()){
+                this.childThatIsA(IDE_Morph).confirm(
+                    'Quit Snap!?',
+                    'Unsaved Changes!',
+                    () => {
+                        window.onbeforeunload=null;
+                        window.removeEventListener("beforeunload", this.onbeforeunloadListener);
+                        
+                        this.isReadyToUnload = true
+                        close()
+                    }
+                );
+                e.preventDefault();
+            }
+            e.stopImmediatePropagation()
+            return true
         }
-    };
-    window.addEventListener("beforeunload", this.onbeforeunloadListener);
+     window.addEventListener("beforeunload", this.onbeforeunloadListener);
 };
 
 WorldMorph.prototype.hasUnsavedEdits = function () {
