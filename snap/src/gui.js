@@ -92,7 +92,7 @@ modules.gui = '2025-October-23';
 // Declarations
 
 var SnapVersion = '11.0.8';
-
+var SnapDesktopVersion = '1.1';
 var IDE_Morph;
 var ProjectDialogMorph;
 var LibraryImportDialogMorph;
@@ -5635,7 +5635,9 @@ IDE_Morph.prototype.aboutSnap = function () {
         module, btn1, btn2, btn3, btn4, licenseBtn, translatorsBtn,
         world = this.world();
 
-    aboutTxt = 'Snap! ' + SnapVersion + '\nBuild Your Own Blocks\n\n'
+    aboutTxt = 'Snap!Desktop ' + SnapDesktopVersion
+        + '\nElectron version of Snap!\n'
+        + 'Snap! ' + SnapVersion + '\nBuild Your Own Blocks\n\n'
         + 'Copyright \u24B8 2008-2025 Jens M\u00F6nig and '
         + 'Brian Harvey\n'
         + 'jens@moenig.org, bh@cs.berkeley.edu\n\n'
