@@ -52,6 +52,8 @@ function createWindow() {
     });
 }
 
+app.commandLine.appendSwitch('enable-experimental-web-platform-features');
+app.commandLine.appendSwitch('disable-usb-blocklist');
 app.whenReady().then(createWindow);
 
 app.on("window-all-closed", () => {
