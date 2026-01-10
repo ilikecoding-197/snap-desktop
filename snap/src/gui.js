@@ -4205,6 +4205,10 @@ IDE_Morph.prototype.snapMenu = function () {
         () => window.open('https://snap.berkeley.edu/', 'SnapWebsite')
     );
     menu.addItem(
+        'Snap! forum',
+        () => window.open('https://forum.snap.berkeley.edu/', 'SnapForum')
+    );
+    menu.addItem(
         'Download source',
         () => window.open(
                 'https://github.com/jmoenig/Snap/releases/latest',
