@@ -92,7 +92,7 @@ modules.gui = '2025-October-23';
 // Declarations
 
 var SnapVersion = '11.0.8';
-var SnapDesktopVersion = '1.1';
+var SnapDesktopVersion = '1.1.1';
 var IDE_Morph;
 var ProjectDialogMorph;
 var LibraryImportDialogMorph;
