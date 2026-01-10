@@ -1,6 +1,14 @@
-const { app, BrowserWindow, ipcMain } = require("electron");
+const { app, BrowserWindow, ipcMain, shell } = require("electron");
 
-function createWindow() {
+function openLocalSnapFromUrl(url) {
+    const parsed = new URL(url);
+
+    createWindow({
+        hash: parsed.hash
+    });
+}
+
+function createWindow(opts) {
     const win = new BrowserWindow({
         width: 910,
         minWidth: 910,
@@ -19,20 +27,12 @@ function createWindow() {
         icon: `${__dirname}/snap/src/favicon.ico`
     });
 
-    win.loadFile(`${__dirname}/snap/snap.html`);
+    win.loadFile(`${__dirname}/snap/snap.html`, opts);
 
     win.webContents.setVisualZoomLevelLimits(1, 1);
     win.webContents.on("did-finish-load", () => {
         win.webContents.setZoomLevel(0);
         win.webContents.setZoomFactor(1);
-    });
-    ipcMain.on("set-control-colors", (event, { color, symbol }) => {
-        if (win) {
-            win.setTitleBarOverlay({
-                color: color,
-                symbolColor: symbol
-            });
-        }
     });
 
     win.on('enter-full-screen', () => {
@@ -42,6 +42,12 @@ function createWindow() {
     win.on('leave-full-screen', () => {
         win.webContents.send('fullscreen-changed', false);
     });
+}
+
+app.commandLine.appendSwitch('enable-experimental-web-platform-features');
+app.commandLine.appendSwitch('disable-usb-blocklist');
+app.whenReady().then(() => {
+    createWindow({});
 
     ipcMain.handle('toggle-fullscreen', () => {
         win.setFullScreen(!win.isFullScreen());
@@ -50,14 +56,39 @@ function createWindow() {
     ipcMain.handle('open-dev-tools', () => {
         win.webContents.openDevTools();
     });
-}
 
-app.commandLine.appendSwitch('enable-experimental-web-platform-features');
-app.commandLine.appendSwitch('disable-usb-blocklist');
-app.whenReady().then(createWindow);
+    ipcMain.on("set-control-colors", (event, { color, symbol }) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win) {
+            win.setTitleBarOverlay({
+                color: color,
+                symbolColor: symbol
+            });
+        }
+    });
+});
 
 app.on("window-all-closed", () => {
     if (process.platform !== "darwin") {
         app.quit();
+    }
+});
+
+app.on("web-contents-created", (event, contents) => {
+    if (contents.getType() === "window") {
+        contents.on("will-navigate", (event, url) => {
+            if (url.startsWith("https://snap.berkeley.edu/snap/")) {
+                event.preventDefault();
+                openLocalSnapFromUrl(url);
+            }
+        });
+
+        contents.setWindowOpenHandler(({ url }) => {
+            if (url.startsWith("https://snap.berkeley.edu/snap/")) {
+                openLocalSnapFromUrl(url);
+                return { action: "deny" };
+            }
+            return { action: "allow" };
+        });
     }
 });
