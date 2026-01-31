@@ -29,9 +29,6 @@
       "preload.js",
       "package.json"
     ],
-    "directories": {
-      "buildResources": "assets"
-    },
     "win": {
       "target": "nsis"
     },
@@ -45,9 +42,13 @@
       "license": "LICENSE.txt"
     },
     "linux": {
-      "target": ["AppImage", "deb", "tar.xz", "zip"],
-      "category": "Programming",
+      "target": ["AppImage", "deb"],
+      "category": "Education",
+      "icon": "snap-icon-512.png",
       "maintainer": "ilikecoding-197 <64pigpig2014@gmail.com>"
+    },
+    "directories": {
+      "buildResources": "snap/img"
     },
     "mac": {
       "category": "public.app-category.utilities",
