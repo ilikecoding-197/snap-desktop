@@ -4853,6 +4853,7 @@ Morph.prototype.overlappingPixels = function (otherMorph) {
 
 Morph.prototype.updateElementPos = function() {
     if (!this.element) return;
+    if (!(this.element instanceof HTMLElement)) return;
 
     this.element.style.top = `${this.top()}px`;
     this.element.style.left = `${this.left()}px`;
