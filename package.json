@@ -1,6 +1,6 @@
 {
   "name": "snap-desktop",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Snap! for Desktop",
   "main": "main.js",
   "scripts": {
