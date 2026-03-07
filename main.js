@@ -49,12 +49,18 @@ app.commandLine.appendSwitch('disable-usb-blocklist');
 app.whenReady().then(() => {
     createWindow({});
 
-    ipcMain.handle('toggle-fullscreen', () => {
-        win.setFullScreen(!win.isFullScreen());
+    ipcMain.handle('toggle-fullscreen', (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win) {
+            win.setFullScreen(!win.isFullScreen());
+        }
     });
 
-    ipcMain.handle('open-dev-tools', () => {
-        win.webContents.openDevTools();
+    ipcMain.handle('open-dev-tools', (event) => {
+        const win = BrowserWindow.fromWebContents(event.sender);
+        if (win) {
+            win.webContents.openDevTools();
+        }
     });
 
     ipcMain.on("set-control-colors", (event, { color, symbol }) => {
